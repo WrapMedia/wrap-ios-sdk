@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'WrapSDK_Example' do
+  pod 'WrapSDK', :path => '../'
+
+  target 'WrapSDK_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
