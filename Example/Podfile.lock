@@ -1,0 +1,16 @@
+PODS:
+  - WrapSDK (0.1.0)
+
+DEPENDENCIES:
+  - WrapSDK (from `../`)
+
+EXTERNAL SOURCES:
+  WrapSDK:
+    :path: ../
+
+SPEC CHECKSUMS:
+  WrapSDK: 34850d0df855ce87c5df41d4fa050a9c137ad51f
+
+PODFILE CHECKSUM: b4bf93f1b32a28a926fb809ce1b38318c223e4a1
+
+COCOAPODS: 1.0.1
