@@ -9,7 +9,7 @@
         <scene sceneID="58r-4d-oJ9">
             <objects>
                 <navigationController id="4Xn-VX-3nZ" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="OrQ-7l-2gn">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="OrQ-7l-2gn">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -32,24 +32,15 @@
                     <view key="view" contentMode="scaleToFill" id="pLu-Gd-057">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BKn-UP-dU6">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
-                            </webView>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="BKn-UP-dU6" firstAttribute="leading" secondItem="pLu-Gd-057" secondAttribute="leading" id="LGD-qy-AQc"/>
-                            <constraint firstAttribute="bottom" secondItem="BKn-UP-dU6" secondAttribute="bottom" id="exO-Xe-7Nk"/>
-                            <constraint firstItem="BKn-UP-dU6" firstAttribute="top" secondItem="pLu-Gd-057" secondAttribute="top" id="o0q-jc-4ce"/>
-                            <constraint firstAttribute="trailing" secondItem="BKn-UP-dU6" secondAttribute="trailing" id="uWq-Vb-rbx"/>
-                        </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="hsB-XX-FoX"/>
-                    <connections>
-                        <outlet property="webView" destination="BKn-UP-dU6" id="FKj-pI-YCD"/>
-                    </connections>
+                    <navigationItem key="navigationItem" id="hsB-XX-FoX">
+                        <barButtonItem key="leftBarButtonItem" systemItem="done" id="6ll-fj-pTY">
+                            <connections>
+                                <action selector="tappedDone:" destination="YY3-kS-xvK" id="D5R-9y-LRQ"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aoz-99-8jn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
