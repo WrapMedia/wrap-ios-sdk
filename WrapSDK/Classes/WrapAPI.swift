@@ -35,4 +35,22 @@ public class WrapAPI: NSObject {
         }
         task.resume()
     }
+    
+    public func fetchWrapsForProfileWithUUID(uuid: String, page: Int, completion: (data: [AnyObject]?, response: NSURLResponse?, error: NSError?) -> Void) {
+        let url = NSURL(string: "/api/profiles/\(uuid)/wraps?page=\(page)", relativeToURL: baseURL)!
+        let session = NSURLSession.sharedSession()
+        let task = session.dataTaskWithURL(url) { data, response, error in
+            if let data = data where error == nil {
+                do {
+                    let parsedData = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(rawValue: 0))
+                    completion(data: parsedData as! [AnyObject], response: response, error: error)
+                } catch {
+                    completion(data: nil, response: response, error: error as! NSError)
+                }
+            } else {
+                completion(data: nil, response: response, error: error)
+            }
+        }
+        task.resume()
+    }
 }

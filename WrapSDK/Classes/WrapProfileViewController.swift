@@ -8,22 +8,23 @@
 
 import UIKit
 
-private let reuseIdentifier = "Cell"
-
 class WrapProfileViewController: UICollectionViewController {
-
-    private var profileData: [String: AnyObject?]?
     
-    public var profileUUID: String!
+    var profileUUID: String!
+    
+    private var profileData: [String: AnyObject]?
+    
+    private var wraps: [AnyObject]?
+    private var page: Int = 0
+    private var hasNext: Bool = false
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        navigationItem.title = NSLocalizedString("Please wait...", comment: "Please wait... navigation bar title")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Register cell classes
-        self.collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
 
         // Do any additional setup after loading the view.
     }
@@ -35,14 +36,41 @@ class WrapProfileViewController: UICollectionViewController {
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        fetchProfile()
+    }
+    
+    func fetchProfile() {
         if profileData == nil {
-            WrapAPI.sharedInstance.fetchProfileWithUUID(profileUUID) { data, response, error in
-                if let data = data {
-                    print(data.description)
+            WrapAPI.sharedInstance.fetchProfileWithUUID(profileUUID) { [weak self] data, response, error in
+                if let data = data where error == nil {
+                    self?.profileData = data
+                    self?.navigationItem.title = data["name"] as? String
+                    NSOperationQueue.mainQueue().addOperationWithBlock { [weak self] in
+                        self?.collectionView?.reloadData()
+                    }
+                    self?.fetchWraps()
+                } else {
+                    //// TODO show some sort of error state
                 }
             }
         }
     }
+
+    func fetchWraps() {
+        WrapAPI.sharedInstance.fetchWrapsForProfileWithUUID(profileUUID, page: page) { [weak self] data, response, error in
+            if let data = data where error == nil {
+                if self?.wraps == nil {
+                    self?.wraps = data
+                    NSOperationQueue.mainQueue().addOperationWithBlock { [weak self] in
+                        self?.collectionView?.reloadData()
+                    }
+                }
+            } else {
+                //// TODO show some sort of error state
+            }
+        }
+    }
+    
     
     /*
     // MARK: - Navigation
@@ -53,30 +81,66 @@ class WrapProfileViewController: UICollectionViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    @IBAction func donePressed(sender: UIBarButtonItem) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
 
     // MARK: UICollectionViewDataSource
 
     override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
+    }
+    
+    override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+        let headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "coverView", forIndexPath: indexPath) as! WrapProfileCoverView
+        if let profileData = profileData {
+            headerView.imageURL = profileData["coverImage"] as? String
+        }
+        return headerView
     }
 
-
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
-        return 0
+        return wraps?.count ?? 0
     }
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath)
-    
-        // Configure the cell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("thumbnailCell", forIndexPath: indexPath) as! WrapProfileThumbnailCell
+        
+        if let wrap = wraps?[indexPath.row] as? [String: AnyObject],
+           let cards = wrap["cards"] as? [AnyObject],
+           let card = cards[0] as? [String: AnyObject],
+           let preview = card["preview"] as? [String: AnyObject] {
+            cell.imageURL = preview["medium"] as? String
+        }
     
         return cell
     }
 
     // MARK: UICollectionViewDelegate
 
+    func collectionView(collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                               referenceSizeForHeaderInSection section: Int) -> CGSize {
+        let width = collectionView.frame.size.width
+        let height = floor(width * 28.0 / 75.0)
+        return CGSizeMake(width, height)
+    }
+    
+    func collectionView(collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                               sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
+        let sectionInset = flowLayout.sectionInset
+        let width = floor((collectionView.frame.size.width - flowLayout.minimumInteritemSpacing - sectionInset.left - sectionInset.right) / 2)
+        let height = floor(width * 91.0 / 64.0)
+        return CGSizeMake(width, height)
+    }
+    
+    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        
+    }
+    
     /*
     // Uncomment this method to specify if the specified item should be highlighted during tracking
     override func collectionView(collectionView: UICollectionView, shouldHighlightItemAtIndexPath indexPath: NSIndexPath) -> Bool {
