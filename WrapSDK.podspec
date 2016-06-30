@@ -30,8 +30,11 @@ TODO: Add long description of the pod here.
 
   s.ios.deployment_target = '8.0'
 
-  s.source_files = 'WrapSDK/Classes/**/*'
-  
+  s.source_files = 'WrapSDK/Classes/**/*.{swift}'
+
+  s.resource_bundles = {
+    'WrapSDK' => ['WrapSDK/Classes/**/*.{storyboard,xib}']
+  }
   # s.resource_bundles = {
   #   'WrapSDK' => ['WrapSDK/Assets/*.png']
   # }
