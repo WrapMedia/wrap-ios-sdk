@@ -24,11 +24,20 @@
                                     <action selector="presentProfilePressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="joU-ah-Wt9"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n3f-Hv-49c">
+                                <rect key="frame" x="248" y="374" width="104" height="30"/>
+                                <state key="normal" title="Present Viewer"/>
+                                <connections>
+                                    <action selector="presentWrapViewer:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="sNb-vL-Nmt"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="n3f-Hv-49c" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="3Ce-a5-oIS"/>
                             <constraint firstItem="Uti-tk-EOM" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" id="GTL-tc-2Ng"/>
                             <constraint firstItem="Uti-tk-EOM" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="org-Ur-28a"/>
+                            <constraint firstItem="n3f-Hv-49c" firstAttribute="top" secondItem="Uti-tk-EOM" secondAttribute="bottom" constant="59" id="s3k-CS-qyI"/>
                         </constraints>
                     </view>
                 </viewController>

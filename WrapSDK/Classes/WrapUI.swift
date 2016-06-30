@@ -15,6 +15,15 @@ public class WrapUI: NSObject {
      */
     public class func presentWrapWithUUID(uuid: String, parentViewController: UIViewController) {
         
+        let podBundle = NSBundle(forClass: self)
+        let bundleURL = podBundle.URLForResource("WrapSDK", withExtension: "bundle")
+        
+        let storyboard = UIStoryboard.init(name: "WrapViewer", bundle: NSBundle(URL: bundleURL!)!)
+        let vc = storyboard.instantiateInitialViewController() as! UINavigationController
+        let wrapVC = vc.topViewController as! WrapViewController
+        wrapVC.wrapID = uuid
+        parentViewController.presentViewController(vc, animated: true, completion: nil)
+        
     }
     
     /**

@@ -24,5 +24,9 @@ class ViewController: UIViewController {
     @IBAction func presentProfilePressed(sender: UIButton) {
         WrapUI.presentWrapProfileWithUUID("fca9e3ab-629d-4740-b2f7-3135f3900b00", parentViewController: self)
     }
+    
+    @IBAction func presentWrapViewer(sender: AnyObject?) {
+        WrapUI.presentWrapWithUUID("d5c76bee-7967-438c-92e2-ef3ff32e7e83", parentViewController: self)
+    }
 }
 
