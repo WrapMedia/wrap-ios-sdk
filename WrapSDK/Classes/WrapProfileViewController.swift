@@ -138,7 +138,10 @@ class WrapProfileViewController: UICollectionViewController {
     }
     
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        
+        if let wrap = wraps?[indexPath.row] as? [String: AnyObject],
+           let id = wrap["id"] as? String {
+            WrapUI.presentWrapWithUUID(id, parentViewController: self)
+        }
     }
     
     /*
