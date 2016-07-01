@@ -33,11 +33,8 @@ TODO: Add long description of the pod here.
   s.source_files = 'WrapSDK/Classes/**/*.{swift}'
 
   s.resource_bundles = {
-    'WrapSDK' => ['WrapSDK/Classes/**/*.{storyboard,xib}']
+    'WrapSDK' => ['WrapSDK/Classes/**/*.{storyboard,xib}', 'WrapSDK/Assets/**/*']
   }
-  # s.resource_bundles = {
-  #   'WrapSDK' => ['WrapSDK/Assets/*.png']
-  # }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'

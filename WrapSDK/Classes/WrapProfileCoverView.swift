@@ -9,8 +9,18 @@
 import UIKit
 
 class WrapProfileCoverView: UICollectionReusableView {
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet private weak var label: UILabel!
 
+    var text: String? {
+        get {
+            return label.text
+        }
+        set {
+            label.text = newValue
+        }
+    }
+    
     var imageURL: String? {
         didSet {
             downloadImage()

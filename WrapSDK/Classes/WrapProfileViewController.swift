@@ -17,11 +17,6 @@ class WrapProfileViewController: UICollectionViewController {
     private var wraps: [AnyObject]?
     private var page: Int = 0
     private var hasNext: Bool = false
-
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        navigationItem.title = NSLocalizedString("Please wait...", comment: "Please wait... navigation bar title")
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,7 +39,6 @@ class WrapProfileViewController: UICollectionViewController {
             WrapAPI.sharedInstance.fetchProfileWithUUID(profileUUID) { [weak self] data, response, error in
                 if let data = data where error == nil {
                     self?.profileData = data
-                    self?.navigationItem.title = data["name"] as? String
                     NSOperationQueue.mainQueue().addOperationWithBlock { [weak self] in
                         self?.collectionView?.reloadData()
                     }
@@ -96,6 +90,7 @@ class WrapProfileViewController: UICollectionViewController {
         let headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "coverView", forIndexPath: indexPath) as! WrapProfileCoverView
         if let profileData = profileData {
             headerView.imageURL = profileData["coverImage"] as? String
+            headerView.text = profileData["name"] as? String
         }
         return headerView
     }

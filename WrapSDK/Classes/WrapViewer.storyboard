@@ -3,13 +3,15 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--Navigation Controller-->
+        <!--Wrap Navigation Controller-->
         <scene sceneID="58r-4d-oJ9">
             <objects>
-                <navigationController id="4Xn-VX-3nZ" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="OrQ-7l-2gn">
+                <navigationController modalPresentationStyle="overFullScreen" id="4Xn-VX-3nZ" customClass="WrapNavigationController" customModule="WrapSDK" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="OrQ-7l-2gn">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -24,7 +26,7 @@
         <!--Wrap View Controller-->
         <scene sceneID="x3c-bd-fzu">
             <objects>
-                <viewController id="YY3-kS-xvK" customClass="WrapViewController" customModule="WrapSDK" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="YY3-kS-xvK" customClass="WrapViewController" customModule="WrapSDK" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="rpN-RH-ORU"/>
                         <viewControllerLayoutGuide type="bottom" id="0WS-Fy-3oy"/>
@@ -32,19 +34,39 @@
                     <view key="view" contentMode="scaleToFill" id="pLu-Gd-057">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NEZ-oK-8lC">
+                                <rect key="frame" x="60" y="-41" width="480" height="682"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="NEZ-oK-8lC" secondAttribute="height" multiplier="64:91" id="RHf-8c-dpf"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="NEZ-oK-8lC" firstAttribute="centerY" secondItem="pLu-Gd-057" secondAttribute="centerY" id="VK3-xd-74P"/>
+                            <constraint firstItem="NEZ-oK-8lC" firstAttribute="centerX" secondItem="pLu-Gd-057" secondAttribute="centerX" id="rOW-vt-rj9"/>
+                            <constraint firstItem="NEZ-oK-8lC" firstAttribute="width" secondItem="pLu-Gd-057" secondAttribute="width" multiplier="0.8" id="rfb-Kd-7z6"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="hsB-XX-FoX">
-                        <barButtonItem key="leftBarButtonItem" systemItem="done" id="6ll-fj-pTY">
+                        <barButtonItem key="rightBarButtonItem" image="Close" id="6ll-fj-pTY">
                             <connections>
                                 <action selector="tappedDone:" destination="YY3-kS-xvK" id="D5R-9y-LRQ"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="wrapperView" destination="NEZ-oK-8lC" id="PNW-yk-Ulh"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aoz-99-8jn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="303" y="386"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Close" width="46" height="46"/>
+    </resources>
 </document>

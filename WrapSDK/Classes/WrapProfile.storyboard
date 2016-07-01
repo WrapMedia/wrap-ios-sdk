@@ -4,13 +4,12 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Navigation Controller-->
+        <!--Wrap Navigation Controller-->
         <scene sceneID="POL-Hr-9cS">
             <objects>
-                <navigationController id="WoB-ld-beV" sceneMemberID="viewController">
+                <navigationController modalPresentationStyle="overFullScreen" id="WoB-ld-beV" customClass="WrapNavigationController" customModule="WrapSDK" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="mwB-0O-5Tj">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -26,35 +25,36 @@
         <!--Wrap Profile View Controller-->
         <scene sceneID="nPr-zZ-kYn">
             <objects>
-                <collectionViewController id="zdF-Ej-vso" customClass="WrapProfileViewController" customModule="WrapSDK" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController automaticallyAdjustsScrollViewInsets="NO" id="zdF-Ej-vso" customClass="WrapProfileViewController" customModule="WrapSDK" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="rac-XZ-5uq">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="zAa-ch-GMv">
                             <size key="itemSize" width="50" height="50"/>
                             <size key="headerReferenceSize" width="50" height="50"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                            <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="10"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="thumbnailCell" id="uZL-9w-nKX" customClass="WrapProfileThumbnailCell" customModule="WrapSDK" customModuleProvider="target">
-                                <rect key="frame" x="10" y="114" width="50" height="50"/>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="thumbnailCell" id="uZL-9w-nKX" userLabel="Wrap Profile Thumbnail View" customClass="WrapProfileThumbnailCell" customModule="WrapSDK" customModuleProvider="target">
+                                <rect key="frame" x="10" y="60" width="50" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bqH-bl-yIn">
-                                            <rect key="frame" x="7.5" y="8" width="35" height="34"/>
+                                            <rect key="frame" x="7.5" y="0.0" width="35" height="50"/>
                                         </imageView>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                                 <constraints>
                                     <constraint firstItem="bqH-bl-yIn" firstAttribute="width" secondItem="uZL-9w-nKX" secondAttribute="height" multiplier="640:910" id="7CC-Nc-qNP"/>
-                                    <constraint firstItem="bqH-bl-yIn" firstAttribute="top" secondItem="uZL-9w-nKX" secondAttribute="topMargin" id="Rey-94-5Ad"/>
+                                    <constraint firstItem="bqH-bl-yIn" firstAttribute="top" secondItem="uZL-9w-nKX" secondAttribute="top" id="Rey-94-5Ad"/>
                                     <constraint firstItem="bqH-bl-yIn" firstAttribute="centerX" secondItem="uZL-9w-nKX" secondAttribute="centerX" id="Yq4-eq-Bu1"/>
-                                    <constraint firstItem="bqH-bl-yIn" firstAttribute="bottom" secondItem="uZL-9w-nKX" secondAttribute="bottomMargin" id="mG1-wi-zUf"/>
+                                    <constraint firstItem="bqH-bl-yIn" firstAttribute="bottom" secondItem="uZL-9w-nKX" secondAttribute="bottom" id="mG1-wi-zUf"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="imageView" destination="bqH-bl-yIn" id="K5s-WV-VHd"/>
@@ -62,7 +62,7 @@
                             </collectionViewCell>
                         </cells>
                         <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="coverView" id="dGv-Y2-hUV" customClass="WrapProfileCoverView" customModule="WrapSDK" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="64" width="600" height="50"/>
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="TJV-sf-cQI">
@@ -71,14 +71,24 @@
                                         <constraint firstAttribute="width" secondItem="TJV-sf-cQI" secondAttribute="height" multiplier="750:280" id="MZv-bJ-7WE"/>
                                     </constraints>
                                 </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uGi-xv-Fek">
+                                    <rect key="frame" x="10" y="173.5" width="580" height="40.5"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="24"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                             <constraints>
                                 <constraint firstItem="TJV-sf-cQI" firstAttribute="top" secondItem="dGv-Y2-hUV" secondAttribute="top" id="05e-hj-eWM"/>
                                 <constraint firstItem="TJV-sf-cQI" firstAttribute="trailing" secondItem="dGv-Y2-hUV" secondAttribute="trailing" id="4SY-YF-RxZ"/>
+                                <constraint firstItem="uGi-xv-Fek" firstAttribute="leading" secondItem="TJV-sf-cQI" secondAttribute="leading" constant="10" id="NHL-mh-7oV"/>
+                                <constraint firstItem="uGi-xv-Fek" firstAttribute="bottom" secondItem="TJV-sf-cQI" secondAttribute="bottom" constant="-10" id="NhX-OJ-15L"/>
                                 <constraint firstItem="TJV-sf-cQI" firstAttribute="leading" secondItem="dGv-Y2-hUV" secondAttribute="leading" id="SQn-vQ-pKb"/>
+                                <constraint firstItem="uGi-xv-Fek" firstAttribute="trailing" secondItem="TJV-sf-cQI" secondAttribute="trailing" constant="-10" id="jeg-Cw-AhE"/>
                             </constraints>
                             <connections>
                                 <outlet property="imageView" destination="TJV-sf-cQI" id="dnt-zo-9oh"/>
+                                <outlet property="label" destination="uGi-xv-Fek" id="qOL-2M-Lhh"/>
                             </connections>
                         </collectionReusableView>
                         <connections>
@@ -87,7 +97,7 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" id="roo-l7-N5k">
-                        <barButtonItem key="leftBarButtonItem" systemItem="done" id="sYc-AM-V4z">
+                        <barButtonItem key="rightBarButtonItem" image="Close" id="sYc-AM-V4z">
                             <connections>
                                 <action selector="donePressed:" destination="zdF-Ej-vso" id="aZg-zU-hz5"/>
                             </connections>
@@ -99,4 +109,7 @@
             <point key="canvasLocation" x="987" y="352"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Close" width="46" height="46"/>
+    </resources>
 </document>

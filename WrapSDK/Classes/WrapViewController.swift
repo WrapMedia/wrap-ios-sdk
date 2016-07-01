@@ -15,12 +15,18 @@ class WrapViewController: UIViewController {
     
     public var wrapID: String?
     
+    @IBOutlet weak var wrapperView: UIView!
+    
     var webView : WKWebView = WKWebView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.addSubview(webView)
-        configureAutolayoutConstraints()
+        webView.frame = wrapperView.bounds
+        webView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.8)
+        webView.scrollView.backgroundColor = UIColor.clearColor()
+        webView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        wrapperView.addSubview(webView)
+//        configureAutolayoutConstraints()
     }
     
     override func didReceiveMemoryWarning() {

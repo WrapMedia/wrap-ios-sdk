@@ -10,6 +10,15 @@ import UIKit
 
 class WrapProfileThumbnailCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        contentView.layer.cornerRadius = 3.0
+//        contentView.layer.borderWidth = 1.0
+//        contentView.layer.borderColor = UIColor.redColor().CGColor// UIColor.clearColor().CGColor
+//        contentView.layer.backgroundColor = UIColor.clearColor().CGColor
+        contentView.layer.masksToBounds = true
+    }
     
     var imageURL: String? {
         didSet {
