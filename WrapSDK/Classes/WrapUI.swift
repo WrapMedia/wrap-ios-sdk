@@ -52,11 +52,35 @@ public class WrapUI: NSObject {
      Convenience function for checking a push notification dictionary for a Wrap ID, then presenting
      it in a WrapViewController on top of the current view controller.
      */
-    public class func presentWrapFromPushNotification(notification: NSDictionary) -> Bool {
+    public class func presentWrapFromPushNotification(notification: NSDictionary, launched: Bool = true) -> Bool {
         if let wrapID = notification["wrapID"] as? String {
             //// find the current top-most view controller
             if let vc = WrapUI.currentViewController() {
-                WrapUI.presentWrapWithUUID(wrapID, parentViewController: vc)
+                if launched {
+                    //// launched from notification, so display immediately
+                    WrapUI.presentWrapWithUUID(wrapID, parentViewController: vc)
+                    return true
+                } else {
+                    //// app in foreground, first prompt the user
+                    if let aps = notification["aps"] as? [String: AnyObject],
+                       let alert = aps["alert"] as? String {
+                        let alert = UIAlertController(title: nil, message: alert, preferredStyle: .Alert)
+                        alert.addAction(UIAlertAction(title: NSLocalizedString("View", comment: "Alert button accept title"),
+                            style: .Default,
+                            handler: { action in
+                                WrapUI.presentWrapWithUUID(wrapID, parentViewController: vc)
+                            })
+                        )
+                        alert.addAction(UIAlertAction(title: NSLocalizedString("No thanks", comment: "Alert button decline title"),
+                            style: .Cancel,
+                            handler: nil))
+                        if #available(iOS 9.0, *) {
+                            alert.preferredAction = alert.actions[0]
+                        }
+                        vc.presentViewController(alert, animated: true, completion: nil)
+                        return true
+                    }
+                }
             }
         }
         return false

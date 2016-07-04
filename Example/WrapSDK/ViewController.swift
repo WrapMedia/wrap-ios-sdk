@@ -27,6 +27,12 @@ class ViewController: UIViewController {
     
     @IBAction func presentWrapViewer(sender: AnyObject?) {
         WrapUI.presentWrapWithUUID("d5c76bee-7967-438c-92e2-ef3ff32e7e83", parentViewController: self)
+//        WrapUI.presentWrapFromPushNotification([
+//            "wrapID": "d5c76bee-7967-438c-92e2-ef3ff32e7e83",
+//            "aps": [
+//                "alert": "This is a test."
+//            ]
+//        ], launched: false)
     }
 }
 
