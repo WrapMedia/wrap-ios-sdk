@@ -37,12 +37,18 @@ class WrapViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        //// append Wrap UUID to path
+        //// TODO: validate UUID format
         guard let uuid = wrapID else { return }
-        
-        
         let url = baseURL.URLByAppendingPathComponent(uuid)
-        let request = NSURLRequest(URL: url)
         
+        //// appent nocontrols query param to hide menu and library controls
+        guard let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false) else { return }
+        components.query = "nocontrols"
+        
+        //// construct and load
+        guard let finalURL = components.URL else { return }
+        let request = NSURLRequest(URL: finalURL)
         webView.loadRequest(request)
     }
     
