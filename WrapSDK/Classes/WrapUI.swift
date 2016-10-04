@@ -8,11 +8,11 @@
 
 import UIKit
 
-public class WrapUI: NSObject {
+open class WrapUI: NSObject {
     /**
      Returns the top-most view controller in the app.
      */
-    class func currentViewController(vc: UIViewController? = nil) -> UIViewController? {
+    class func currentViewController(_ vc: UIViewController? = nil) -> UIViewController? {
         if let vc = vc {
             if let modalVC = vc.presentedViewController {
                 //// there's a modal on top of this vc, so recurse into it...
@@ -42,7 +42,7 @@ public class WrapUI: NSObject {
                 //// we're done here...!
                 return vc
             }
-        } else if let vc = UIApplication.sharedApplication().keyWindow?.rootViewController {
+        } else if let vc = UIApplication.shared.keyWindow?.rootViewController {
             return WrapUI.currentViewController(vc)
         }
         return nil
@@ -52,7 +52,7 @@ public class WrapUI: NSObject {
      Convenience function for checking a push notification dictionary for a Wrap ID, then presenting
      it in a WrapViewController on top of the current view controller.
      */
-    public class func presentWrapFromPushNotification(notification: NSDictionary, launched: Bool = true) -> Bool {
+    open class func presentWrapFromPushNotification(_ notification: NSDictionary, launched: Bool = true) -> Bool {
         if let wrapID = notification["wrapID"] as? String {
             //// find the current top-most view controller
             if let vc = WrapUI.currentViewController() {
@@ -64,20 +64,20 @@ public class WrapUI: NSObject {
                     //// app in foreground, first prompt the user
                     if let aps = notification["aps"] as? [String: AnyObject],
                        let alert = aps["alert"] as? String {
-                        let alert = UIAlertController(title: nil, message: alert, preferredStyle: .Alert)
+                        let alert = UIAlertController(title: nil, message: alert, preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: NSLocalizedString("View", comment: "Alert button accept title"),
-                            style: .Default,
+                            style: .default,
                             handler: { action in
                                 WrapUI.presentWrapWithUUID(wrapID, parentViewController: vc)
                             })
                         )
                         alert.addAction(UIAlertAction(title: NSLocalizedString("No thanks", comment: "Alert button decline title"),
-                            style: .Cancel,
+                            style: .cancel,
                             handler: nil))
                         if #available(iOS 9.0, *) {
                             alert.preferredAction = alert.actions[0]
                         }
-                        vc.presentViewController(alert, animated: true, completion: nil)
+                        vc.present(alert, animated: true, completion: nil)
                         return true
                     }
                 }
@@ -90,16 +90,16 @@ public class WrapUI: NSObject {
      Convenience function for presenting a WrapViewController that loads a Wrap
      with the specified UUID.
      */
-    public class func presentWrapWithUUID(uuid: String, parentViewController: UIViewController) {
+    open class func presentWrapWithUUID(_ uuid: String, parentViewController: UIViewController) {
         
-        let podBundle = NSBundle(forClass: self)
-        let bundleURL = podBundle.URLForResource("WrapSDK", withExtension: "bundle")
+        let podBundle = Bundle(for: self)
+        let bundleURL = podBundle.url(forResource: "WrapSDK", withExtension: "bundle")
         
-        let storyboard = UIStoryboard.init(name: "WrapViewer", bundle: NSBundle(URL: bundleURL!)!)
+        let storyboard = UIStoryboard.init(name: "WrapViewer", bundle: Bundle(url: bundleURL!)!)
         let vc = storyboard.instantiateInitialViewController() as! UINavigationController
         let wrapVC = vc.topViewController as! WrapViewController
         wrapVC.wrapID = uuid
-        parentViewController.presentViewController(vc, animated: true, completion: nil)
+        parentViewController.present(vc, animated: true, completion: nil)
         
     }
     
@@ -107,14 +107,14 @@ public class WrapUI: NSObject {
      Convenience function for presenting a WrapProfileViewController that loads a Wrap Profile
      with the specified UUID.
      */
-    public class func presentWrapProfileWithUUID(uuid: String, parentViewController: UIViewController) {
-        let podBundle = NSBundle(forClass: self)
-        let bundleURL = podBundle.URLForResource("WrapSDK", withExtension: "bundle")
+    open class func presentWrapProfileWithUUID(_ uuid: String, parentViewController: UIViewController) {
+        let podBundle = Bundle(for: self)
+        let bundleURL = podBundle.url(forResource: "WrapSDK", withExtension: "bundle")
         
-        let storyboard = UIStoryboard.init(name: "WrapProfile", bundle: NSBundle(URL: bundleURL!)!)
+        let storyboard = UIStoryboard.init(name: "WrapProfile", bundle: Bundle(url: bundleURL!)!)
         let vc = storyboard.instantiateInitialViewController() as! UINavigationController
         let profileVC = vc.topViewController as! WrapProfileViewController
         profileVC.profileUUID = uuid
-        parentViewController.presentViewController(vc, animated: true, completion: nil)
+        parentViewController.present(vc, animated: true, completion: nil)
     }
 }

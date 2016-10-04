@@ -12,11 +12,11 @@ class WrapProfileViewController: UICollectionViewController {
     
     var profileUUID: String!
     
-    private var profileData: [String: AnyObject]?
+    fileprivate var profileData: [String: AnyObject]?
     
-    private var wraps: [AnyObject]?
-    private var page: Int = 0
-    private var hasNext: Bool = false
+    fileprivate var wraps: [AnyObject]?
+    fileprivate var page: Int = 0
+    fileprivate var hasNext: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +29,7 @@ class WrapProfileViewController: UICollectionViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fetchProfile()
     }
@@ -37,9 +37,9 @@ class WrapProfileViewController: UICollectionViewController {
     func fetchProfile() {
         if profileData == nil {
             WrapAPI.sharedInstance.fetchProfileWithUUID(profileUUID) { [weak self] data, response, error in
-                if let data = data where error == nil {
+                if let data = data , error == nil {
                     self?.profileData = data
-                    NSOperationQueue.mainQueue().addOperationWithBlock { [weak self] in
+                    OperationQueue.main.addOperation { [weak self] in
                         self?.collectionView?.reloadData()
                     }
                     self?.fetchWraps()
@@ -52,10 +52,10 @@ class WrapProfileViewController: UICollectionViewController {
 
     func fetchWraps() {
         WrapAPI.sharedInstance.fetchWrapsForProfileWithUUID(profileUUID, page: page) { [weak self] data, response, error in
-            if let data = data where error == nil {
+            if let data = data , error == nil {
                 if self?.wraps == nil {
                     self?.wraps = data
-                    NSOperationQueue.mainQueue().addOperationWithBlock { [weak self] in
+                    OperationQueue.main.addOperation { [weak self] in
                         self?.collectionView?.reloadData()
                     }
                 }
@@ -76,18 +76,18 @@ class WrapProfileViewController: UICollectionViewController {
     }
     */
     
-    @IBAction func donePressed(sender: UIBarButtonItem) {
-        dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func donePressed(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
     }
 
     // MARK: UICollectionViewDataSource
 
-    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-        let headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "coverView", forIndexPath: indexPath) as! WrapProfileCoverView
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "coverView", for: indexPath) as! WrapProfileCoverView
         if let profileData = profileData {
             headerView.imageURL = profileData["coverImage"] as? String
             headerView.text = profileData["name"] as? String
@@ -95,14 +95,14 @@ class WrapProfileViewController: UICollectionViewController {
         return headerView
     }
 
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return wraps?.count ?? 0
     }
 
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("thumbnailCell", forIndexPath: indexPath) as! WrapProfileThumbnailCell
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "thumbnailCell", for: indexPath) as! WrapProfileThumbnailCell
         
-        if let wrap = wraps?[indexPath.row] as? [String: AnyObject],
+        if let wrap = wraps?[(indexPath as NSIndexPath).row] as? [String: AnyObject],
            let cards = wrap["cards"] as? [AnyObject],
            let card = cards[0] as? [String: AnyObject],
            let preview = card["preview"] as? [String: AnyObject] {
@@ -114,26 +114,26 @@ class WrapProfileViewController: UICollectionViewController {
 
     // MARK: UICollectionViewDelegate
 
-    func collectionView(collectionView: UICollectionView,
+    func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                                referenceSizeForHeaderInSection section: Int) -> CGSize {
         let width = collectionView.frame.size.width
         let height = floor(width * 28.0 / 75.0)
-        return CGSizeMake(width, height)
+        return CGSize(width: width, height: height)
     }
     
-    func collectionView(collectionView: UICollectionView,
+    func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
-                               sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+                               sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize {
         let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
         let sectionInset = flowLayout.sectionInset
         let width = floor((collectionView.frame.size.width - flowLayout.minimumInteritemSpacing - sectionInset.left - sectionInset.right) / 2)
         let height = floor(width * 91.0 / 64.0)
-        return CGSizeMake(width, height)
+        return CGSize(width: width, height: height)
     }
     
-    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        if let wrap = wraps?[indexPath.row] as? [String: AnyObject],
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let wrap = wraps?[(indexPath as NSIndexPath).row] as? [String: AnyObject],
            let id = wrap["id"] as? String {
             WrapUI.presentWrapWithUUID(id, parentViewController: self)
         }

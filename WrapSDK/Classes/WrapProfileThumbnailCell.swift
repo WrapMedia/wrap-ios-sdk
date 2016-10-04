@@ -30,22 +30,22 @@ class WrapProfileThumbnailCell: UICollectionViewCell {
         if var imageURL = imageURL {
             if !imageURL.hasPrefix("http") {
                 if imageURL.hasPrefix("//") {
-                    imageURL = imageURL.substringFromIndex(imageURL.startIndex.advancedBy(2))
+                    imageURL = imageURL.substring(from: imageURL.characters.index(imageURL.startIndex, offsetBy: 2))
                 }
                 if imageURL.hasPrefix("//") {
-                    imageURL = imageURL.substringFromIndex(imageURL.startIndex.advancedBy(2))
+                    imageURL = imageURL.substring(from: imageURL.characters.index(imageURL.startIndex, offsetBy: 2))
                 }
                 imageURL = "https://\(imageURL)"
             }
-            let url = NSURL(string: imageURL)!
-            let session = NSURLSession.sharedSession()
-            let task = session.dataTaskWithURL(url) { data, response, error in
-                if let data = data where error == nil {
-                    NSOperationQueue.mainQueue().addOperationWithBlock { [weak self] in
+            let url = URL(string: imageURL)!
+            let session = URLSession.shared
+            let task = session.dataTask(with: url, completionHandler: { data, response, error in
+                if let data = data , error == nil {
+                    OperationQueue.main.addOperation { [weak self] in
                         self?.imageView.image = UIImage(data: data)
                     }
                 }
-            }
+            }) 
             task.resume()
         }
     }

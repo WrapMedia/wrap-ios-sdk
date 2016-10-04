@@ -9,8 +9,8 @@
 import UIKit
 
 class WrapProfileCoverView: UICollectionReusableView {
-    @IBOutlet private weak var imageView: UIImageView!
-    @IBOutlet private weak var label: UILabel!
+    @IBOutlet fileprivate weak var imageView: UIImageView!
+    @IBOutlet fileprivate weak var label: UILabel!
 
     var text: String? {
         get {
@@ -29,15 +29,15 @@ class WrapProfileCoverView: UICollectionReusableView {
     
     func downloadImage() {
         if let imageURL = imageURL {
-            let url = NSURL(string: imageURL)!
-            let session = NSURLSession.sharedSession()
-            let task = session.dataTaskWithURL(url) { data, response, error in
-                if let data = data where error == nil {
-                    NSOperationQueue.mainQueue().addOperationWithBlock { [weak self] in
+            let url = URL(string: imageURL)!
+            let session = URLSession.shared
+            let task = session.dataTask(with: url, completionHandler: { data, response, error in
+                if let data = data , error == nil {
+                    OperationQueue.main.addOperation { [weak self] in
                         self?.imageView.image = UIImage(data: data)
                     }
                 }
-            }
+            }) 
             task.resume()
         }
     }

@@ -8,49 +8,49 @@
 
 import UIKit
 
-public class WrapAPI: NSObject {
-    public static var sharedInstance = WrapAPI(baseURL: "https://api.wrap.co/")
+open class WrapAPI: NSObject {
+    open static var sharedInstance = WrapAPI(baseURL: "https://api.wrap.co/")
     
-    private var baseURL: NSURL
+    fileprivate var baseURL: URL
 
     public init(baseURL: String) {
-        self.baseURL = NSURL(string: baseURL)!
+        self.baseURL = URL(string: baseURL)!
         super.init()
     }
     
-    public func fetchProfileWithUUID(uuid: String, completion: (data: [String: AnyObject]?, response: NSURLResponse?, error: NSError?) -> Void) {
-        let url = NSURL(string: "/api/profiles/\(uuid)", relativeToURL: baseURL)!
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithURL(url) { data, response, error in
-            if let data = data where error == nil {
+    open func fetchProfileWithUUID(_ uuid: String, completion: @escaping (_ data: [String: AnyObject]?, _ response: URLResponse?, _ error: NSError?) -> Void) {
+        let url = URL(string: "/api/profiles/\(uuid)", relativeTo: baseURL)!
+        let session = URLSession.shared
+        let task = session.dataTask(with: url, completionHandler: { data, response, error in
+            if let data = data , error == nil {
                 do {
-                    let parsedData = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(rawValue: 0))
-                    completion(data: parsedData as! [String: AnyObject], response: response, error: error)
+                    let parsedData = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0))
+                    completion(parsedData as! [String: AnyObject], response, error as NSError?)
                 } catch {
-                    completion(data: nil, response: response, error: error as! NSError)
+                    completion(nil, response, error as NSError)
                 }
             } else {
-                completion(data: nil, response: response, error: error)
+                completion(nil, response, error as NSError?)
             }
-        }
+        }) 
         task.resume()
     }
     
-    public func fetchWrapsForProfileWithUUID(uuid: String, page: Int, completion: (data: [AnyObject]?, response: NSURLResponse?, error: NSError?) -> Void) {
-        let url = NSURL(string: "/api/profiles/\(uuid)/wraps?page=\(page)", relativeToURL: baseURL)!
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithURL(url) { data, response, error in
-            if let data = data where error == nil {
+    open func fetchWrapsForProfileWithUUID(_ uuid: String, page: Int, completion: @escaping (_ data: [AnyObject]?, _ response: URLResponse?, _ error: NSError?) -> Void) {
+        let url = URL(string: "/api/profiles/\(uuid)/wraps?page=\(page)", relativeTo: baseURL)!
+        let session = URLSession.shared
+        let task = session.dataTask(with: url, completionHandler: { data, response, error in
+            if let data = data , error == nil {
                 do {
-                    let parsedData = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(rawValue: 0))
-                    completion(data: parsedData as! [AnyObject], response: response, error: error)
+                    let parsedData = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0))
+                    completion(parsedData as! [AnyObject], response, error as NSError?)
                 } catch {
-                    completion(data: nil, response: response, error: error as! NSError)
+                    completion(nil, response, error as NSError)
                 }
             } else {
-                completion(data: nil, response: response, error: error)
+                completion(nil, response, error as NSError?)
             }
-        }
+        }) 
         task.resume()
     }
 }

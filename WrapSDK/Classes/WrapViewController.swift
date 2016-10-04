@@ -9,11 +9,11 @@
 import UIKit
 import WebKit
 
-private let baseURL : NSURL = NSURL(string: "https://wrap.co/wraps")!
+private let baseURL : URL = URL(string: "https://wrap.co/wraps")!
 
 class WrapViewController: UIViewController {
     
-    public var wrapID: String?
+    open var wrapID: String?
     
     @IBOutlet weak var wrapperView: UIView!
     
@@ -22,9 +22,9 @@ class WrapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         webView.frame = wrapperView.bounds
-        webView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.8)
-        webView.scrollView.backgroundColor = UIColor.clearColor()
-        webView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        webView.backgroundColor = UIColor.black.withAlphaComponent(0.8)
+        webView.scrollView.backgroundColor = UIColor.clear
+        webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         wrapperView.addSubview(webView)
 //        configureAutolayoutConstraints()
     }
@@ -34,26 +34,26 @@ class WrapViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         //// append Wrap UUID to path
         //// TODO: validate UUID format
         guard let uuid = wrapID else { return }
-        let url = baseURL.URLByAppendingPathComponent(uuid)
+        let url = baseURL.appendingPathComponent(uuid)
         
         //// appent nocontrols query param to hide menu and library controls
-        guard let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false) else { return }
+        guard var components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { return }
         components.query = "nocontrols"
         
         //// construct and load
-        guard let finalURL = components.URL else { return }
-        let request = NSURLRequest(URL: finalURL)
-        webView.loadRequest(request)
+        guard let finalURL = components.url else { return }
+        let request = URLRequest(url: finalURL)
+        webView.load(request)
     }
     
-    @IBAction func tappedDone(sender: AnyObject?) {
-        presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func tappedDone(_ sender: AnyObject?) {
+        presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
     func configureAutolayoutConstraints()
@@ -61,9 +61,9 @@ class WrapViewController: UIViewController {
         webView.translatesAutoresizingMaskIntoConstraints = false
         
         if #available(iOS 9.0, *) {
-            webView.topAnchor.constraintEqualToAnchor(view.topAnchor).active = true
-            webView.widthAnchor.constraintEqualToAnchor(view.widthAnchor).active = true
-            webView.bottomAnchor.constraintEqualToAnchor(view.bottomAnchor).active = true
+            webView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+            webView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+            webView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         } else {
             // Fallback on earlier versions
         }
